@@ -21,7 +21,7 @@ config:
     
 
 scenarios:
-  - name: Root (/)
+  - name: Space news (/space_news)
     flow:
-      - get:
-          url: '/'
+      - get: 
+          url: '/space_news'
