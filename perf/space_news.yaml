@@ -25,10 +25,10 @@ config:
       arrivalRate: 50
     - pause: 60
     
-    
+
 
 scenarios:
-  - name: Root (/)
+  - name: Space news (/space_news)
     flow:
-      - get:
-          url: '/'
+      - get: 
+          url: '/space_news'
