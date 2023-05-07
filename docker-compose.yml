@@ -5,6 +5,8 @@ services:
         build: ./app
         links:
             - redis
+        ports: 
+            - 3001:3000
 
     redis:
         image: redis:7
