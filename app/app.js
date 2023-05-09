@@ -49,4 +49,18 @@ app.get('/space_news', async (req, res) => {
     res.status(200).send(tittles);
 })
 
+
+app.get('/fact', async (req, res) => {
+
+    const response = await axios.get('https://uselessfacts.jsph.pl/api/v2/facts/random');
+
+    if (response.data.hasOwnProperty('text')){
+        const text = response.data.text;
+        res.status(200).send(text);
+    } else{
+        res.status(502).send('Bad Gateway');
+    }
+})
+
+
 app.listen(3000)
