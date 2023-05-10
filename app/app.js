@@ -61,22 +61,31 @@ app.get('/space_news', async (req, res) => {
 
     if (tittlesString !== null){
         tittles = JSON.parse(tittlesString);
+        res.status(200).send(tittles);
     } else {
-        const response = await axios.get('https://api.spaceflightnewsapi.net/v3/articles');
-        tittles = []
-        
-        response.data.forEach(element => {
-            if (element.hasOwnProperty('title')){
-                tittles.push(element.title);
-            }
-        });
-
-        await redisClient.set('space_news', JSON.stringify(tittles),{
-            EX:5
-        });
+        const response = await axios.get('https://api.spaceflightnewsapi.net/v3/articles')
+        .then(async (response) => {    
+            tittles = []
+            response.data.forEach(element => {
+                if (element.hasOwnProperty('title')){
+                    tittles.push(element.title);
+                }
+            });
+    
+            await redisClient.set('space_news', JSON.stringify(tittles),{
+                EX:5
+            });
+    
+            res.status(200).send(tittles);
+            
+            
+          })
+          .catch((error) => {
+            res.handleRequstError(error);
+          })       
     }
 
-    res.status(200).send(tittles);
+
 })
 
 
