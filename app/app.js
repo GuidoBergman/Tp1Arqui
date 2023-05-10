@@ -2,10 +2,12 @@ import {nanoid} from "nanoid"
 import express from "express"
 import axios from "axios"
 import { createClient } from "redis"
+import { XMLParser } from 'fast-xml-parser'
+import { decode } from 'metar-decoder'
 
 const app = express();
 const redisClient = createClient({url: 'redis://redis:6379'});
-
+const parser = new XMLParser();
 (async () => {
     await redisClient.connect();
 })();
@@ -96,6 +98,37 @@ app.get('/fact', async (req, res) => {
             res.handleRequstError(error);
       })
     
+})
+
+app.get('/metar', async (req, res) => {
+    // res.status(200).send('Messi ' + JSON.stringify(req)); 
+    
+    const stationCode = req.query.station;
+
+    if(stationCode.length !== 4){
+        if(stationCode === ''){
+            res.status(400).send('Parameters station is missing');
+        }else{
+            res.status(400).send('satation must be on OACI format');
+        }
+    }else{
+        await axios.get(`https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=${stationCode}&hoursBeforeNow=1`)
+        .then(async (response) => {
+    
+            const parsed = parser.parse(response.data);
+            if(parsed ===''){
+                res.status(204).send('Not data found for this station');
+            }else{
+                const rawText = decode(parsed.response.data.METAR.raw_text);
+                res.status(200).send(rawText);
+            }
+            
+            
+          })
+          .catch((error) => {
+            res.handleRequstError(error);
+          })
+    }
 })
 
 
