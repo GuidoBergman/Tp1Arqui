@@ -4,6 +4,7 @@ import axios from "axios"
 import { createClient } from "redis"
 import { XMLParser } from 'fast-xml-parser'
 import { decode } from 'metar-decoder'
+import rateLimit from 'express-rate-limit'
 
 const app = express();
 const redisClient = createClient({url: 'redis://redis:6379'});
@@ -22,6 +23,15 @@ app.use((req, res, next) => {
     res.setHeader('API-id', id);
     next();
 });
+
+const limiter = rateLimit({
+	windowMs: 10 * 1000, // 15 seconds
+	max: 50, // Limit each IP to 100 requests per `window` (here, per 15 seconds)
+	standardHeaders: true, 
+	legacyHeaders: false, 
+})
+
+app.use(limiter)
 
 app.use(function(req, res, next) {
     res.handleRequstError = function (error) {
