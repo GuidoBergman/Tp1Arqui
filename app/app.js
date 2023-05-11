@@ -124,7 +124,7 @@ app.get('/metar', async (req, res) => {
         if(stationCode === ''){
             res.status(400).send('Parameters station is missing');
         }else{
-            res.status(400).send('satation must be on OACI format');
+            res.status(400).send('station must be on OACI format');
         }
     }else{
         await axios.get(`https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=${stationCode}&hoursBeforeNow=1`)
