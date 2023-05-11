@@ -77,8 +77,6 @@ app.get('/space_news', async (req, res) => {
             });
     
             res.status(200).send(tittles);
-            
-            
           })
           .catch((error) => {
             res.handleRequstError(error);
@@ -128,15 +126,12 @@ app.get('/metar', async (req, res) => {
             }else{
                 const rawText = decode(parsed.response.data.METAR.raw_text);
                 res.status(200).send(rawText);
-            }
-            
-            
+            }            
           })
           .catch((error) => {
             res.handleRequstError(error);
           })
     }
 })
-
 
 app.listen(3000)
