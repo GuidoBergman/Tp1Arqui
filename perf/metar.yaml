@@ -28,7 +28,7 @@ config:
 
 
 scenarios:
-  - name: Space news (/space_news)
+  - name: Metar (/metar)
     flow:
       - get: 
-          url: '/space_news'
+          url: '/metar'
