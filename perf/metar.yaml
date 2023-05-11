@@ -31,4 +31,4 @@ scenarios:
   - name: Metar (/metar)
     flow:
       - get: 
-          url: '/metar'
+          url: '/metar?station=SAEZ'
