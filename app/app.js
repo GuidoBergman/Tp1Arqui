@@ -110,8 +110,6 @@ app.get('/fact', async (req, res) => {
 })
 
 app.get('/metar', async (req, res) => {
-    // res.status(200).send('Messi ' + JSON.stringify(req)); 
-    
     const stationCode = req.query.station;
 
     if(stationCode.length !== 4){
