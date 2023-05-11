@@ -63,7 +63,7 @@ app.get('/space_news', async (req, res) => {
         tittles = JSON.parse(tittlesString);
         res.status(200).send(tittles);
     } else {
-        const response = await axios.get('https://api.spaceflightnewsapi.net/v3/articles')
+        const response = await axios.get('https://api.spaceflightnewsapi.net/v3/articles?_limit=5')
         .then(async (response) => {    
             tittles = []
             response.data.forEach(element => {
