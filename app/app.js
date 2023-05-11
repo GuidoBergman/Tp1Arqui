@@ -51,8 +51,8 @@ app.use(function(req, res, next) {
   })
   
 
-app.get('/', async(req, res) => {
-    res.status(200).send('ping');
+app.get('/ping', async(req, res) => {
+    res.status(200).send('ping\n');
 })
 
 app.get('/space_news', async (req, res) => {
